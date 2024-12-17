@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Import useNavigate instead of useHistory
+import { useNavigate, Link } from "react-router-dom"; // Import useNavigate instead of useHistory
 
 const RegisterPage = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isAuthor, setIsAuthor] = useState(false); // Added state for isAuthor checkbox
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate(); // useNavigate hook for navigation
@@ -29,12 +30,16 @@ const RegisterPage = () => {
     }
 
     try {
-      const response = await axios.post("/api/register", {
-        first_name: firstName,
-        last_name: lastName,
-        email: email,
-        password: password,
-      });
+      const response = await axios.post(
+        "http://localhost:9000/api/users/register",
+        {
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          password: password,
+          isAuthor: isAuthor, // Send the isAuthor value to the backend
+        }
+      );
 
       setSuccessMessage(response.data.message);
       setError("");
@@ -116,6 +121,19 @@ const RegisterPage = () => {
             />
           </div>
 
+          {/* Checkbox for isAuthor */}
+          <div className="mb-4">
+            <label className="flex items-center text-gray-700 font-semibold">
+              <input
+                type="checkbox"
+                checked={isAuthor}
+                onChange={(e) => setIsAuthor(e.target.checked)}
+                className="mr-2"
+              />
+              I want to become an author
+            </label>
+          </div>
+
           <button
             type="submit"
             className="w-full p-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition duration-200"
@@ -123,6 +141,18 @@ const RegisterPage = () => {
             Register
           </button>
         </form>
+        {/* Navigation to Login */}
+        <div className="text-center mt-4">
+          <p className="text-gray-700">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="text-blue-500 hover:text-green-700 underline transition duration-200"
+            >
+              Login here
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

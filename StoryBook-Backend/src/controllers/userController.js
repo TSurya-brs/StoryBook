@@ -7,7 +7,7 @@ import {
 } from "../utils/utils.js";
 
 const createUser = async (req, res, next) => {
-  const { first_name, last_name, email, password } = req.body;
+  const { first_name, last_name, email, password, isAuthor } = req.body;
 
   try {
     // Check if any fields are empty
@@ -64,6 +64,7 @@ const createUser = async (req, res, next) => {
         password: hashedPassword,
         verify_token: token,
         verify_token_expires: Date.now() + 7200000,
+        isAuthor,
       });
 
       // Return a success response
@@ -157,17 +158,26 @@ const loginUser = async (req, res, next) => {
 
     //Token Generation
     const token = jwt.sign(
-      { userId: user._id, email, password },
+      {
+        userId: user._id,
+        email: user.email,
+        isAuthor: user.isAuthor,
+        name: user.first_name,
+      },
       process.env.JWT_SECRET,
       {
         expiresIn: 2592000,
       }
     );
+    // console.log(user._id, user.isAuthor);
     user.token = token;
     await user.save();
 
     res.status(202).json({
       message: "Login Successfull",
+      token: token,
+      isAuthor: user.isAuthor,
+      name: user.first_name,
     });
   } catch (error) {
     return next(error);

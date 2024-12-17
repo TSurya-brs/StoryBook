@@ -9,6 +9,7 @@ const userSchema = mongoose.Schema({
   verified: { type: Boolean, default: false },
   verify_token: { type: String },
   verify_token_expires: Date,
+  isAuthor: { type: Boolean, default: false },
 });
 
 const User = mongoose.model("User", userSchema);

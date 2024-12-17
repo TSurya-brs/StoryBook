@@ -5,7 +5,7 @@ const storiesSchema = mongoose.Schema({
   content: { type: String },
   author: { type: String },
   likes: { type: Number },
-  comments: { type: String },
+  comments: { type: Array },
 });
 
 const Story = mongoose.model("Story", storiesSchema);
