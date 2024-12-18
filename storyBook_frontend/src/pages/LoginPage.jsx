@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
 const LoginPage = ({ onLogin }) => {
+  // console.log("onLogin prop:", onLogin);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -36,17 +37,19 @@ const LoginPage = ({ onLogin }) => {
         }
       );
 
-      const { message, token, isAuthor } = response.data;
-      onLogin(isAuthor);
+      const { message, token, isAuthor, email1, name } = response.data;
+
       console.log("from Backend the isAuthor value is ", isAuthor);
 
       localStorage.setItem("authToken", response.data.token);
       localStorage.setItem("isAuthor", response.data.isAuthor);
-      localStorage.setItem("userEmail", response.data.email); // Store email
+      localStorage.setItem("userEmail", response.data.email1); // Store email
       localStorage.setItem("userName", response.data.name); // Store username
+      // const email11 = localStorage.getItem("userEmail");
+      // console.log("email", email11);
       // const value = localStorage.getItem("isAuthor");
       // console.log(value);
-
+      onLogin(isAuthor);
       setSuccessMessage(message);
       setError("");
 
@@ -56,6 +59,11 @@ const LoginPage = ({ onLogin }) => {
         navigate("/nav"); // Redirect to a default page
       }, 3000);
     } catch (err) {
+      console.error("Error occurred:", err);
+      if (err.response) {
+        console.error("Error response data:", err.response.data);
+        console.error("Error response status:", err.response.status);
+      }
       setError(err.response?.data?.message || "Something went wrong");
       setSuccessMessage("");
     }

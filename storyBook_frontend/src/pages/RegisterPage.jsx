@@ -57,15 +57,13 @@ const RegisterPage = () => {
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-center text-2xl font-bold text-green-500 mb-6">
+        <h2 className="text-center text-2xl font-bold text-blue-500 mb-6">
           Register
         </h2>
 
         {error && <div className="text-red-500 text-center mb-4">{error}</div>}
         {successMessage && (
-          <div className="text-green-500 text-center mb-4">
-            {successMessage}
-          </div>
+          <div className="text-blue-500 text-center mb-4">{successMessage}</div>
         )}
 
         <form onSubmit={handleSubmit}>
@@ -78,7 +76,7 @@ const RegisterPage = () => {
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               required
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -91,7 +89,7 @@ const RegisterPage = () => {
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               required
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -104,7 +102,7 @@ const RegisterPage = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -117,7 +115,7 @@ const RegisterPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -136,7 +134,7 @@ const RegisterPage = () => {
 
           <button
             type="submit"
-            className="w-full p-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition duration-200"
+            className="w-full p-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-200"
           >
             Register
           </button>
@@ -147,7 +145,7 @@ const RegisterPage = () => {
             Already have an account?{" "}
             <Link
               to="/login"
-              className="text-blue-500 hover:text-green-700 underline transition duration-200"
+              className="text-blue-500 hover:text-blue-700 underline transition duration-200"
             >
               Login here
             </Link>

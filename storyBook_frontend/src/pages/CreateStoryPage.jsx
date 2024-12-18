@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import NavBar from "./NavBar";
+import AuthorStoriesPage from "./AuthorStoriesPage";
 
-const CreateStoryPage = ({ userId }) => {
+const CreateStoryPage = () => {
   const [formData, setFormData] = useState({
     title: "",
-    author: "",
     content: "",
   });
   const [successMessage, setSuccessMessage] = useState("");
@@ -21,21 +21,33 @@ const CreateStoryPage = ({ userId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { title, author, content } = formData;
+    const { title, content } = formData;
 
-    if (!title || !author || !content) {
+    if (!title || !content) {
       setErrorMessage("Please fill all the fields");
       return;
     }
 
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      setErrorMessage("You are not logged in. Please log in first.");
+      return;
+    }
+
     try {
-      const response = await axios.post("http://localhost:9000/api/stories", {
-        ...formData,
-        userId, // Send userId for backend authorization
-      });
-      setSuccessMessage("Story saved successfully!");
+      const response = await axios.post(
+        "http://localhost:9000/api/stories",
+        { title, content }, // Only send title and content
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in headers
+          },
+        }
+      );
+
+      setSuccessMessage(response.data.message);
       setErrorMessage("");
-      setFormData({ title: "", author: "", content: "" }); // Clear form
+      setFormData({ title: "", content: "" }); // Clear form
     } catch (error) {
       console.error("Error saving story:", error);
       setErrorMessage(
@@ -46,7 +58,7 @@ const CreateStoryPage = ({ userId }) => {
 
   return (
     <>
-      <div>{<NavBar />}</div>
+      <NavBar />
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
         <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
           <h1 className="text-3xl font-bold text-center mb-6 text-blue-600">
@@ -77,20 +89,6 @@ const CreateStoryPage = ({ userId }) => {
 
             <div>
               <label className="block text-gray-700 font-medium mb-2">
-                Author Name
-              </label>
-              <input
-                type="text"
-                name="author"
-                value={formData.author}
-                onChange={handleChange}
-                placeholder="Enter your name"
-                className="w-full p-3 border rounded-lg"
-              />
-            </div>
-
-            <div>
-              <label className="block text-gray-700 font-medium mb-2">
                 Story Content
               </label>
               <textarea
@@ -112,6 +110,7 @@ const CreateStoryPage = ({ userId }) => {
           </form>
         </div>
       </div>
+      <AuthorStoriesPage />
     </>
   );
 };

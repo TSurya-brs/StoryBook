@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import NavBar from "./NavBar";
+import { HeartIcon, ChatBubbleLeftIcon } from "@heroicons/react/24/outline";
 
 const StoriesPage = () => {
   const [stories, setStories] = useState([]);
@@ -70,45 +71,53 @@ const StoriesPage = () => {
     <>
       <div>{<NavBar />}</div>
       <div className="p-8 bg-gray-100 min-h-screen">
-        <h1 className="text-3xl font-bold text-center mb-8">All Stories</h1>
+        <h1 className="text-3xl font-bold text-center mb-8">
+          {stories.length === 0 ? "No stories available" : "All Stories"}
+        </h1>
 
         {/* Stories List */}
-        <div className="space-y-6">
-          {stories.map((story) => (
-            <div key={story._id} className="bg-white p-6 rounded-lg shadow-lg">
-              <h2 className="text-xl font-semibold">{story.title}</h2>
-              <p className="text-gray-600 mt-2">{story.content}</p>
+        {stories.length === 0 ? (
+          <div className="text-center text-gray-500 mt-8">
+            No stories available.
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {stories.map((story) => (
+              <div
+                key={story._id}
+                className="bg-white p-6 rounded-lg shadow-lg"
+              >
+                <h2 className="text-3xl font-semibold">Title: {story.title}</h2>
+                <p className="text-lg text-gray-1000 mt-2">
+                  Story: {story.content}
+                </p>
+                <p className="text-sm text-gray-800 mt-2">
+                  Author: {story.author}
+                </p>
 
-              {/* Like Button */}
-              <div className="mt-4 flex items-center space-x-4">
-                <button
-                  onClick={() => handleLike(story._id)}
-                  className="flex items-center text-blue-500 hover:text-blue-700"
-                >
-                  <img
-                    src="/images/like-icon.png" // Use a like icon image
-                    alt="Like"
-                    className="w-6 h-6 mr-2"
-                  />
-                  <span>{story.likes}</span>
-                </button>
+                {/* Like Button */}
+                <div className="mt-4 flex items-center space-x-4">
+                  <button
+                    onClick={() => handleLike(story._id)}
+                    className="flex items-center text-blue-500 hover:text-blue-700"
+                  >
+                    <HeartIcon className="w-6 h-6 mr-2" />
+                    <span>{story.likes}</span>
+                  </button>
 
-                {/* Comments Button */}
-                <button
-                  onClick={() => handleComment(story)}
-                  className="flex items-center text-green-500 hover:text-green-700"
-                >
-                  <img
-                    src="/images/comments-icon.png" // Use a comments icon image
-                    alt="Comments"
-                    className="w-6 h-6 mr-2"
-                  />
-                  <span>{story.comments.length} Comments</span>
-                </button>
+                  {/* Comments Button */}
+                  <button
+                    onClick={() => handleComment(story)}
+                    className="flex items-center text-green-500 hover:text-green-700"
+                  >
+                    <ChatBubbleLeftIcon className="w-6 h-6 mr-2" />
+                    <span>{story.comments.length} Comments</span>
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* Comment Modal/Tab */}
         {showComments && selectedStory && (

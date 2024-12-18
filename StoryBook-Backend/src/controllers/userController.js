@@ -178,6 +178,7 @@ const loginUser = async (req, res, next) => {
       token: token,
       isAuthor: user.isAuthor,
       name: user.first_name,
+      email1: user.email,
     });
   } catch (error) {
     return next(error);
