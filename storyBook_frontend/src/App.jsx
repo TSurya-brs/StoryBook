@@ -9,6 +9,7 @@ import AccountPage from "./pages/AccountPage";
 import LogoutPage from "./pages/LogoutPage";
 import AuthorStoriesPage from "./pages/AuthorStoriesPage";
 import DeleteStoriesPage from "./pages/DeleteStoriesPage";
+import TrendingStoriesPage from "./pages/TrendingStoriesPage";
 
 function App() {
   const authorStatus = localStorage.getItem("isAuthor");
@@ -72,6 +73,14 @@ function App() {
           element={
             <PrivateRoute>
               <StoriesPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/stories/trending"
+          element={
+            <PrivateRoute>
+              <TrendingStoriesPage />
             </PrivateRoute>
           }
         />

@@ -8,6 +8,7 @@ const StoriesPage = () => {
   const [selectedStory, setSelectedStory] = useState(null);
   const [newComment, setNewComment] = useState("");
   const [showComments, setShowComments] = useState(false);
+  const [userId, setUserId] = useState("");
 
   // Fetch all stories
   useEffect(() => {
@@ -23,15 +24,27 @@ const StoriesPage = () => {
     };
 
     fetchStories();
+
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) setUserId(storedUserId);
   }, []);
 
   // Handle like button click
   const handleLike = async (storyId) => {
     try {
-      await axios.post(`http://localhost:9000/api/stories/${storyId}/like`);
-      const updatedStories = stories.map((story) =>
-        story._id === storyId ? { ...story, likes: story.likes + 1 } : story
+      const response = await axios.post(
+        `http://localhost:9000/api/stories/${storyId}/like`,
+        {
+          userId,
+        }
       );
+
+      const updatedStories = stories.map((story) =>
+        story._id === storyId
+          ? { ...story, likes: response.data.likes } // Update likes with the value from the backend
+          : story
+      );
+
       setStories(updatedStories);
     } catch (error) {
       console.error("Error updating like:", error);
@@ -60,6 +73,13 @@ const StoriesPage = () => {
             : story
         );
         setStories(updatedStories);
+        // setSelectedStory(stories);
+        if (selectedStory && selectedStory._id === storyId) {
+          setSelectedStory({
+            ...selectedStory,
+            comments: [...(selectedStory.comments || []), newComment],
+          });
+        }
         setNewComment("");
       } catch (error) {
         console.error("Error adding comment:", error);
@@ -111,7 +131,7 @@ const StoriesPage = () => {
                     className="flex items-center text-green-500 hover:text-green-700"
                   >
                     <ChatBubbleLeftIcon className="w-6 h-6 mr-2" />
-                    <span>{story.comments.length} Comments</span>
+                    <span>{story.comments.length || 0} Comments</span>
                   </button>
                 </div>
               </div>

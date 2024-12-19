@@ -1,17 +1,43 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const NavBar = ({ userEmail, userName }) => {
+  const location = useLocation(); // Get current location
+
   return (
     <>
       <nav className="flex justify-between items-center bg-blue-600 p-4">
-        <h1 className="text-3xl font-bold">storyBook</h1>
+        <h1 className="text-3xl font-bold text-white">StoryBook</h1>
         <div className="flex space-x-4">
-          <Link to="/stories/list" className="text-white">
+          <Link
+            to="/stories/list"
+            className={`text-white ${
+              location.pathname === "/stories/list"
+                ? "border-b-2 border-white"
+                : ""
+            }`}
+          >
             Stories
           </Link>
-          <Link to="/stories/create" className="text-white">
+          <Link
+            to="/stories/create"
+            className={`text-white ${
+              location.pathname === "/stories/create"
+                ? "border-b-2 border-white"
+                : ""
+            }`}
+          >
             Create Story
+          </Link>
+          <Link
+            to="/stories/trending"
+            className={`text-white ${
+              location.pathname === "/stories/trending"
+                ? "border-b-2 border-white"
+                : ""
+            }`}
+          >
+            Trending Stories
           </Link>
         </div>
 
@@ -23,7 +49,7 @@ const NavBar = ({ userEmail, userName }) => {
             Account
           </Link>
           <Link
-            to="/logout" // Navigate to logout page
+            to="/logout"
             className="text-white bg-red-500 px-4 py-2 rounded hover:bg-red-600"
           >
             Logout

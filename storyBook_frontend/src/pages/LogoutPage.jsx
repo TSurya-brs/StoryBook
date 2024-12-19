@@ -9,6 +9,7 @@ const LogoutPage = () => {
     localStorage.removeItem("isAuthor");
     localStorage.removeItem("userEmail");
     localStorage.removeItem("userName");
+    localStorage.removeItem("userId");
     navigate("/login");
   }, [navigate]);
 

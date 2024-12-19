@@ -122,21 +122,45 @@ const Storylist = async (req, res, next) => {
   }
 };
 
-// In your authorStoriesController.js
-const likeStory = async (req, res, next) => {
+// Liking story
+let flag = 0;
+const likeStory = async (req, res) => {
   const { storyId } = req.params;
+  const { userId } = req.body;
+
   try {
     const story = await Story.findById(storyId);
+
     if (!story) {
       return res.status(404).json({ message: "Story not found" });
     }
 
-    // Increment the like count
-    story.likes += 1;
+    // Check if the user has already liked the story
+    const userIndex = story.liked_by_id.includes(userId);
+
+    if (!userIndex) {
+      // If user has not liked, add their ID and increment likes
+      story.liked_by_id.push(userId);
+      story.likes += 1;
+      flag = 1;
+    }
+    if (userIndex && flag === 1) {
+      story.liked_by_id = story.liked_by_id.filter((id) => id !== userId);
+      story.likes -= 1;
+      flag = 0;
+    }
+    // console.log(flag);
+
     await story.save();
-    return res.status(200).json({ message: "Like added successfully" });
+
+    return res.status(200).json({
+      message: "Like status updated successfully",
+      likes: story.likes,
+      liked_by_id: story.liked_by_id,
+    });
   } catch (error) {
-    return next(error);
+    console.error("Error updating like:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -160,7 +184,23 @@ const commentStory = async (req, res, next) => {
   }
 };
 
-const trendingStories = async (req, res, next) => {};
+const trendingStories = async (req, res, next) => {
+  try {
+    // Fetch stories sorted by likes in descending order
+    const stories = await Story.find().sort({ likes: -1 });
+
+    // Add trending numbers to stories
+    // const trendingStories = stories.map((story, index) => ({
+    //   ...story.toObject(),
+    //   trending: index + 1,
+    // }));
+    // console.log(stories);
+    res.status(200).json(stories);
+  } catch (error) {
+    console.error("Error fetching trending stories:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 
 export {
   authorStory,

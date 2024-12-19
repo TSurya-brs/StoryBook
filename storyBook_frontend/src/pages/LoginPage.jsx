@@ -37,18 +37,19 @@ const LoginPage = ({ onLogin }) => {
         }
       );
 
-      const { message, token, isAuthor, email1, name } = response.data;
+      const { message, token, userId, isAuthor, email1, name } = response.data;
 
       console.log("from Backend the isAuthor value is ", isAuthor);
 
+      localStorage.setItem("userId", response.data.userId);
       localStorage.setItem("authToken", response.data.token);
       localStorage.setItem("isAuthor", response.data.isAuthor);
       localStorage.setItem("userEmail", response.data.email1); // Store email
       localStorage.setItem("userName", response.data.name); // Store username
       // const email11 = localStorage.getItem("userEmail");
       // console.log("email", email11);
-      // const value = localStorage.getItem("isAuthor");
-      // console.log(value);
+      // const value = localStorage.getItem("userId");
+      // console.log("userid is", value);
       onLogin(isAuthor);
       setSuccessMessage(message);
       setError("");
