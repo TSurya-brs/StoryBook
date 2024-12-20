@@ -121,9 +121,11 @@ function App() {
         <Route
           path="/stories/create"
           element={
-            <ProtectedRoute>
-              <CreateStoryPage />
-            </ProtectedRoute>
+            <PrivateRoute>
+              <ProtectedRoute>
+                <CreateStoryPage />
+              </ProtectedRoute>
+            </PrivateRoute>
           }
         />
       </Routes>

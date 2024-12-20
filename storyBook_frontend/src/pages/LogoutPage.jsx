@@ -10,6 +10,7 @@ const LogoutPage = () => {
     localStorage.removeItem("userEmail");
     localStorage.removeItem("userName");
     localStorage.removeItem("userId");
+    localStorage.removeItem("flag");
     navigate("/login");
   }, [navigate]);
 

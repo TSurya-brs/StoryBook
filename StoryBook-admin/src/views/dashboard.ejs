@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <!-- Link to the compiled Tailwind CSS -->
+    <link href="/css/tailwind.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="layoutSidenav_content">
+      <main>
+        <div class="container mx-auto px-4">
+          <h1 class="text-3xl font-bold mt-4">Dashboard</h1>
+          <div
+            class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+          >
+            <!-- User Count Card -->
+            <div class="bg-blue-600 text-white p-4 rounded-lg shadow-md">
+              <h2 class="text-xl">Users</h2>
+              <span class="text-3xl float-right"><%= userCount %></span>
+            </div>
+            <!-- Story Count Card -->
+            <div class="bg-blue-600 text-white p-4 rounded-lg shadow-md">
+              <h2 class="text-xl">Stories</h2>
+              <span class="text-3xl float-right"><%= storyCount %></span>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

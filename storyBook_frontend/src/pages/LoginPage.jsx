@@ -2,6 +2,14 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
+// const clearData = () => {
+//   localStorage.removeItem("authToken");
+//   localStorage.removeItem("isAuthor");
+//   localStorage.removeItem("userEmail");
+//   localStorage.removeItem("userName");
+//   localStorage.removeItem("userId");
+// };
+
 const LoginPage = ({ onLogin }) => {
   // console.log("onLogin prop:", onLogin);
   const [email, setEmail] = useState("");
@@ -11,6 +19,13 @@ const LoginPage = ({ onLogin }) => {
   const [isAuthor, setIsAuthor] = useState(false); // State to hold the user's author status
   const navigate = useNavigate(); // useNavigate hook for navigation
 
+  // useEffect(() => {
+  //   const token = localStorage.getItem("authToken");
+  //   if (token) {
+  //     // If there is a token in the localStorage, redirect to another route (e.g., /home or /dashboard)
+  //     clearData(); // This clears the data when the login page is accessed
+  //   }
+  // }, []);
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,6 +61,7 @@ const LoginPage = ({ onLogin }) => {
       localStorage.setItem("isAuthor", response.data.isAuthor);
       localStorage.setItem("userEmail", response.data.email1); // Store email
       localStorage.setItem("userName", response.data.name); // Store username
+      localStorage.setItem("flag", 1);
       // const email11 = localStorage.getItem("userEmail");
       // console.log("email", email11);
       // const value = localStorage.getItem("userId");
